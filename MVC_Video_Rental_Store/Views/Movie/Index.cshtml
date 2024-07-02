@@ -1,0 +1,40 @@
+﻿@using ViewModels
+@model List<MovieViewModel>
+
+ <div>
+     <h1>Movies</h1>
+ </div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Genre</th>
+            <th scope="col">Available</th>
+            <th scope="col">Go to Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach(var movie in Model)
+            {
+                <tr>
+                    <th scope="row">@movie.Title</th>
+                    <td>@movie.Genre</td>
+                    <td>
+                        @{
+                            if (movie.IsAvailable)
+                            {
+                                <p style="color:limegreen">The movie is available for rent.</p>
+                            }
+                            else
+                            {
+                                <p style="color:red">The movie is not available for rent.</p>
+                            }
+                        }
+                    </td>
+                    <td><a asp-action="Details" asp-controller="Movie" asp-route-id="@movie.Id" class="btn btn-primary">Deatils</a></td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

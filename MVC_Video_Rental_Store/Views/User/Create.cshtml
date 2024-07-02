@@ -1,0 +1,38 @@
+﻿@using Enums
+@model UserViewModel
+
+
+<form asp-action="Create" asp-controller="User" method="post">
+    <label asp-for="FullName" class="form-label">Enter full name</label>
+    <input asp-for="FullName" class="form-control" />
+    <br />
+
+    <label asp-for="Email" class="form-label">Enter email</label>
+    <input asp-for="Email" class="form-control" />
+    <br />
+
+    <label asp-for="Password" class="form-label">Enter password</label>
+    <input asp-for="Password" class="form-control" />
+    <br />
+
+    <label asp-for="Age" class="form-label">Enter your age</label>
+    <input asp-for="Age" class="form-control" />
+    <br />
+
+    <label asp-for="CardNumber" class="form-label">Enter card number</label>
+    <input asp-for="CardNumber" class="form-control" />
+    <br />
+
+    <div class="form-group">
+        <label asp-for="SubscriptionType" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <select asp-for="SubscriptionType" asp-items="Html.GetEnumSelectList<Enums.SubscriptionTypeEnum>()">
+                <option selected="selected" value="">Please select</option>
+            </select>
+            <span asp-validation-for="SubscriptionType" class="text-danger" />
+        </div>
+    </div>
+    <br />
+
+    <button type="submit" class="btn btn-success">Save</button>
+</form>

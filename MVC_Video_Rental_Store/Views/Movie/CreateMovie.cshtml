@@ -1,0 +1,59 @@
+﻿@using Enums
+@model MovieViewModel
+
+<form asp-action="CreateMovie" asp-controller="Movie" method="post">
+    <label asp-for="Title" class="form-label">Enter movie title</label>
+    <input type="text" asp-for="Title" class="form-control w-50" />
+    <span asp-validation-for="Title" class="text-danger"></span>
+    <br />
+
+    <div class="form-group">
+        <label asp-for="Genre" class="col-md-4 control-label"></label>
+        <div class="col-md-10">
+            <select asp-for="Genre" asp-items="Html.GetEnumSelectList<Enums.GenreEnum>()">
+                <option selected="selected" value="">Please select genre</option>
+            </select>
+            <span asp-validation-for="Genre" class="text-danger" />
+        </div>
+    </div>
+    <br />
+
+    <div class="form-group">
+        <label asp-for="Language" class="control-label"></label>
+        <div>
+            <select asp-for="Language" asp-items="Html.GetEnumSelectList<Enums.LanguageEnum>()">
+                <option selected="selected" value="">Please select language</option>
+            </select>
+            <span asp-validation-for="Language" class="text-danger" />
+        </div>
+    </div>
+    <br />
+
+    <div class="form-check">
+        <label class="form-check-label" for="flexCheckDefault" asp-for="IsAvailable">Available</label>
+        <input class="form-check-input" asp-for="IsAvailable" type="checkbox" value="true">
+        <span asp-validation-for="IsAvailable" class="text-danger"></span>
+    </div>
+    <br />
+
+    <label asp-for="ReleaseDate" class="form-lable">Release Date</label>
+    <input type="date" asp-for="ReleaseDate" asp-format="{0:yyyy-MM-dd}" value="2024-01-01" class="form-control w-25" />
+    <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+    <br />
+
+    <label asp-for="Length" class="form-label">Lentgh</label>
+    <input asp-for="Length" class="form-control w-auto" />
+    <span asp-validation-for="Length" class="text-danger"></span>
+    <br />
+
+
+    <label asp-for="AgeRestriction" class="form-label">Enter age restriction</label>
+    <input asp-for="AgeRestriction" class="form-control w-auto" />
+    <br />
+
+    <label asp-for="Quantity" class="form-label">Enter quantity</label>
+    <input asp-for="Quantity" class="form-control w-auto" />
+    <br />
+
+    <button type="submit" class="btn btn-success">Save</button>
+</form>

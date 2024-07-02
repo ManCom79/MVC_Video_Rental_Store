@@ -11,7 +11,9 @@ namespace MVC_Video_Rental_Store
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddScoped<UserService>();
+            builder.Services.AddTransient<UserService>();
+            builder.Services.AddTransient<MovieService>();
+            builder.Services.AddTransient<RentService>();
 
             var app = builder.Build();
 

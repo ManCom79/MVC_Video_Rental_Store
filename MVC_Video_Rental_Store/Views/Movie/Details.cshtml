@@ -1,0 +1,46 @@
+﻿@using ViewModels
+@model MovieViewModel
+
+<h1>@Model.Title</h1>
+<br />
+
+<h4>Genre</h4>
+<p>@Model.Genre</p>
+<br />
+
+<h4>Language</h4>
+<p>@Model.Language</p>
+<br />
+
+<h4>Available for rent:</h4>
+@{
+	if (@Model.IsAvailable) {
+		<p style="color:green">The movie is available for rent.</p>
+	} else {
+		<p style="color:red">The movie is not available for rent.</p>
+	}
+}
+<br />
+
+<h4>Release Date:</h4>
+<p>@Model.ReleaseDate</p>
+<br />
+
+<h4>Length</h4>
+<p>@Model.Length</p>
+<br />
+
+<h4>Age restriction</h4>
+<p>@Model.AgeRestriction</p>
+<br />
+
+<h4>Available copies</h4>
+<p>@Model.Quantity</p>
+<br />
+
+@{
+	if(@Model.Quantity > 0)
+	{
+		<a asp-controller="Rent" asp-action="CreateRental" class="btn btn-primary" asp-route-id="@Model.Id" id="@Model.Id">Rent</a>
+	}
+}

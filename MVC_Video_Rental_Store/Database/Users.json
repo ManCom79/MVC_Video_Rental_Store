@@ -1,1 +1,35 @@
-[{"Id":1,"FullName":"Test User","Age":35,"CardNumber":"1234","CreatedOn":"2024-06-16T21:20:54.6297914+02:00","IsSubscriptionExpired":false,"SubscriptionType":2}]
+[
+  {
+    "Email": "bob@gmail.com",
+    "Password": "bob",
+    "FullName": "Bob Bobsky",
+    "Age": 30,
+    "CardNumber": "A123456",
+    "CreatedOn": "2024-06-30T13:49:58.4016705+02:00",
+    "IsSubscriptionExpired": false,
+    "SubscriptionType": 1,
+    "Id": 1
+  },
+  {
+    "Email": "jane@gmail.com",
+    "Password": "jane",
+    "FullName": "Jane Doe",
+    "Age": 25,
+    "CardNumber": "aa2555",
+    "CreatedOn": "2024-06-30T14:33:09.2512395+02:00",
+    "IsSubscriptionExpired": false,
+    "SubscriptionType": 2,
+    "Id": 2
+  },
+  {
+    "Email": "john@gmail.com",
+    "Password": "john",
+    "FullName": "John Doe",
+    "Age": 34,
+    "CardNumber": "a564213",
+    "CreatedOn": "2024-06-30T14:44:27.7449378+02:00",
+    "IsSubscriptionExpired": false,
+    "SubscriptionType": 4,
+    "Id": 3
+  }
+]

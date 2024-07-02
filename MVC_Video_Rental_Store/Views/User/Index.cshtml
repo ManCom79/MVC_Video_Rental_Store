@@ -1,3 +1,25 @@
-﻿@model int
-<h3>Test</h3>
-@Model
+﻿@model List<UserViewModel>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Age</th>
+            <th scope="col">Card Number</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach(var user in Model)
+            {
+                <tr>
+                    <th scope="row">@user.Id</th>
+                    <td>@user.FullName</td>
+                    <td>@user.Age</td>
+                    <td>@user.CardNumber</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

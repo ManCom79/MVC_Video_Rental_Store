@@ -1,0 +1,41 @@
+﻿@using ViewModels
+@model List<RentalViewModel>
+
+<h1>Rentals</h1>
+
+@{
+
+    if (@Model.Count > 0)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Movie</th>
+                    <th scope="col">Rented On</th>
+                    <th scope="col">Returned On</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var counter = 1;
+                    foreach (var rental in @Model)
+                    {
+                        <tr>
+                            <th scope="row">@counter</th>
+                            <td>@rental.Title</td>
+                            <td>@rental.RentedOn.Date</td>
+                            <td>
+                                <a asp-controller="Rent" asp-action="DeleteRental" asp-route-id="@rental.Id" class="btn btn-primary">Return</a>
+                            </td>
+                        </tr>
+                        counter++;
+                    }
+                }
+            </tbody>
+        </table>
+    } else
+    {
+        <h3>You don't have any movies rented yet.</h3>
+    }
+}

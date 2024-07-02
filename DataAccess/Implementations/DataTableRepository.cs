@@ -14,37 +14,108 @@ namespace DataAccess.Implementations
     {
         public void Add(T entity)
         {
-            throw new NotImplementedException();
-        }
+            var records = ReadRecords();
+
+            var newId = 1;
+
+            if (records.Count > 0)
+            {
+                newId = records.Max(x => x.Id) + 1;
+            }
+
+            entity.Id = newId;
+            records.Add(entity);
+
+            WriteRecords(records);
+
+		}
 
         public void Delete(T entity)
         {
-            throw new NotImplementedException();
-        }
+			var records = ReadRecords();
+            records.Remove(entity);
 
-        public void DeleteById(int Id)
+			WriteRecords(records);
+		}
+
+        public void DeleteById(int id)
         {
-            throw new NotImplementedException();
-        }
+            var records = ReadRecords();
+            var record = records.FirstOrDefault(x => x.Id == id);
+
+            records.Remove(record);
+
+			WriteRecords(records);
+		}
 
         public List<T> GetAll()
         {
-            throw new NotImplementedException();
+            return ReadRecords();
         }
 
-        public T GetById(int Id)
+        public T GetById(int id)
         {
-            throw new NotImplementedException();
+			var records = ReadRecords();
+            var record = records.FirstOrDefault(x => x.Id == id);
+
+            return record;
+		}
+
+        public void LogUser(User user)
+        {
+            UserLogged.Id = user.Id;
+            UserLogged.FullName = user.FullName;
+            UserLogged.Email = user.Email;
+            UserLogged.Password = user.Password;
+            UserLogged.Age = user.Age;
+            UserLogged.CardNumber = user.CardNumber;
+            UserLogged.CreatedOn = user.CreatedOn;
+            UserLogged.IsSubscriptionExpired = user.IsSubscriptionExpired;
+            UserLogged.SubscriptionType = (Enums.SubscriptionTypeEnum)user.SubscriptionType;
         }
 
         public List<T> ReadRecords()
         {
-            throw new NotImplementedException();
-        }
+			var folderPath = @"Database";
+			var filepath = @$"{folderPath}/{typeof(T).Name}s.json";
+			var result = new List<T>();
+
+			if (!Directory.Exists(folderPath))
+			{
+				return result;
+			}
+
+			if (!File.Exists(filepath))
+			{
+				return result;
+			}
+
+			try
+			{
+				using (var stremReader = new StreamReader(filepath))
+				{
+					string content = stremReader.ReadToEnd();
+					JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+					result = JsonConvert.DeserializeObject<List<T>>(content, settings) ?? new List<T>();
+				}
+			}
+			catch (Exception ex)
+			{
+				return result;
+			}
+			return result;
+		}
 
         public void Update(T entity)
         {
-            throw new NotImplementedException();
+            var records = ReadRecords();
+            var record = records.FirstOrDefault(x => x.Id == entity.Id);
+            
+            var IndexOfRecord = records.IndexOf(record);
+
+            records[IndexOfRecord] = entity;
+
+            WriteRecords(records);
         }
 
         public void WriteRecords(List<T> record)
