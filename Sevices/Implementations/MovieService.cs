@@ -3,35 +3,36 @@ using DomainModels;
 using Sevices.Interfaces;
 using ViewModels;
 using Mappers;
+using DataAccess.Interfaces;
 
 namespace Sevices.Implementations
 {
     public class MovieService : IMovieService
     {
-        public DataTableRepository<Movie> _dataTableRepository;
+        public IMovieDataTableRepository _movieDataTableRepository;
 
-        public MovieService() {
-            _dataTableRepository = new DataTableRepository<Movie>();
+        public MovieService(IMovieDataTableRepository movieDataTableRepository) {
+            _movieDataTableRepository = movieDataTableRepository;
         }
 
         public List<MovieViewModel> GetAll() { 
-            var movies = _dataTableRepository.GetAll();
+            var movies = _movieDataTableRepository.GetAll();
             return movies.Select(x => x.ToViewModel()).ToList();
         }
 
         public MovieViewModel GetDetails(int id)
         {
-            if(_dataTableRepository.GetById(id) == null)
+            if(_movieDataTableRepository.GetById(id) == null)
             {
                 throw new Exception($"Movie with the id {id} does not exist.");
             }
 
-            var movie = _dataTableRepository.GetById(id);
+            var movie = _movieDataTableRepository.GetById(id);
             return movie.ToViewModel();
         }
         public void CreateMovie(MovieViewModel movieModel)
         {
-            if (_dataTableRepository.GetAll().Any(x => x.Title == movieModel.Title))
+            if (_movieDataTableRepository.GetAll().Any(x => x.Title == movieModel.Title))
             {
                 throw new Exception("A movie with that name already exist!");
             }
@@ -48,7 +49,7 @@ namespace Sevices.Implementations
                 Quantity = movieModel.Quantity,
             };
 
-            _dataTableRepository.Add(movie);
+            _movieDataTableRepository.Add(movie);
         }
     }
 }
