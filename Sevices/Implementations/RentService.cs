@@ -9,22 +9,31 @@ using System.Text;
 using System.Threading.Tasks;
 using ViewModels;
 using Mappers;
+using DataAccess.Interfaces;
 
 namespace Sevices.Implementations
 {
 	public class RentService : IRentService
 	{
-		public DataTableRepository<Movie> _dataTableRepositoryMovie;
-		public DataTableRepository<Rental> _dataTableRepositoryRental;
-		public RentService() {
-			_dataTableRepositoryMovie = new DataTableRepository<Movie>();
-			_dataTableRepositoryRental = new DataTableRepository<Rental>();
+		//public DataTableRepository<Movie> _dataTableRepositoryMovie;
+		//public DataTableRepository<Rental> _dataTableRepositoryRental;
+		public IRentDataTableRepository _rentDataTableRepostitory;
+		public IMovieDataTableRepository _movieDataTableRepository;
+
+		public RentService(IRentDataTableRepository rentDataTableRepostitory, IMovieDataTableRepository movieDataTableRepository)
+		{
+			_rentDataTableRepostitory = rentDataTableRepostitory;
+			_movieDataTableRepository = movieDataTableRepository;
 		}
+		//public RentService() {
+		//	_dataTableRepositoryMovie = new DataTableRepository<Movie>();
+		//	_dataTableRepositoryRental = new DataTableRepository<Rental>();
+		//}
 		public void CreateRental(int id)
 		{
-			if(!_dataTableRepositoryRental.GetAll().Any(x => x.MovieId == id && x.UserId == UserLogged.Id))
+			if(!_rentDataTableRepostitory.GetAll().Any(x => x.MovieId == id && x.UserId == UserLogged.Id))
 			{
-                var movie = _dataTableRepositoryMovie.GetById(id);
+                var movie = _movieDataTableRepository.GetById(id);
                 movie.Quantity = movie.Quantity - 1;
 
                 if (movie.Quantity == 0)
@@ -32,7 +41,7 @@ namespace Sevices.Implementations
                     movie.IsAvailable = false;
                 }
 
-                _dataTableRepositoryMovie.Update(movie);
+                _movieDataTableRepository.Update(movie);
 
                 var rental = new Rental
                 {
@@ -41,21 +50,21 @@ namespace Sevices.Implementations
                     RentedOn = DateTime.Now,
                 };
 
-                _dataTableRepositoryRental.Add(rental);
+                _rentDataTableRepostitory.Add(rental);
             };
 		}
 
 		public List<RentalViewModel> GetUserRentals()
 		{
 			var loggedUserId = UserLogged.Id;
-			var rentals = _dataTableRepositoryRental.GetAll();
+			var rentals = _rentDataTableRepostitory.GetAll();
 			var userRentals = rentals.Where(x => x.UserId == loggedUserId);
 
 			var models = userRentals.Select(x => x.ToViewModel()).ToList();
 
             foreach (var model in models)
             {
-                model.Title = _dataTableRepositoryMovie.GetById(model.MovieId).Title;
+                model.Title = _movieDataTableRepository.GetById(model.MovieId).Title;
             }
 
 			return models;
@@ -63,12 +72,12 @@ namespace Sevices.Implementations
 
 		public void Delete(int id)
 		{
-			var rental = _dataTableRepositoryRental.GetById(id);
-			var movie = _dataTableRepositoryMovie.GetById(rental.MovieId);
+			var rental = _rentDataTableRepostitory.GetById(id);
+			var movie = _movieDataTableRepository.GetById(rental.MovieId);
 			movie.Quantity += 1;
-			_dataTableRepositoryMovie.Update(movie);
+            _movieDataTableRepository.Update(movie);
 
-			_dataTableRepositoryRental.DeleteById(id);
+            _rentDataTableRepostitory.DeleteById(id);
 		}
     }
 }

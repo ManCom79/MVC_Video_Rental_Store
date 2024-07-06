@@ -15,6 +15,7 @@ namespace MVC_Video_Rental_Store
             builder.Services.AddControllersWithViews();
             builder.Services.AddTransient<IUserDataTableRepository, UserDataTableRepository>();
             builder.Services.AddTransient<IMovieDataTableRepository, MovieDataTableRepository>();
+            builder.Services.AddTransient<IRentDataTableRepository, RentDataTableRepository>();
             builder.Services.AddTransient<IUserService, UserService>();
             builder.Services.AddTransient<IMovieService, MovieService>();
             builder.Services.AddTransient<IRentService, RentService>();
