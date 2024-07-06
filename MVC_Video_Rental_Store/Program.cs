@@ -1,5 +1,7 @@
+using DataAccess;
 using DataAccess.Implementations;
 using DataAccess.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Sevices.Implementations;
 using Sevices.Interfaces;
 
@@ -13,6 +15,9 @@ namespace MVC_Video_Rental_Store
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddDbContext<VideoRentalDbContext>(option => option.UseSqlServer(
+                builder.Configuration.GetConnectionString("DefaultConnectionString")
+                ));
             builder.Services.AddTransient<IUserDataTableRepository, UserDataTableRepository>();
             builder.Services.AddTransient<IMovieDataTableRepository, MovieDataTableRepository>();
             builder.Services.AddTransient<IRentDataTableRepository, RentDataTableRepository>();
