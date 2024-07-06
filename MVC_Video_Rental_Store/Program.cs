@@ -1,3 +1,5 @@
+using DataAccess.Implementations;
+using DataAccess.Interfaces;
 using Sevices.Implementations;
 using Sevices.Interfaces;
 
@@ -11,9 +13,10 @@ namespace MVC_Video_Rental_Store
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddTransient<UserService>();
-            builder.Services.AddTransient<MovieService>();
-            builder.Services.AddTransient<RentService>();
+            builder.Services.AddTransient<IUserDataTableRepository, UserDataTableRepository>();
+            builder.Services.AddTransient<IUserService, UserService>();
+            builder.Services.AddTransient<IMovieService, MovieService>();
+            builder.Services.AddTransient<IRentService, RentService>();
 
             var app = builder.Build();
 

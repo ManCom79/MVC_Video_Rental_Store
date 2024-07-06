@@ -60,20 +60,6 @@ namespace DataAccess.Implementations
 
             return record;
 		}
-
-        public void LogUser(User user)
-        {
-            UserLogged.Id = user.Id;
-            UserLogged.FullName = user.FullName;
-            UserLogged.Email = user.Email;
-            UserLogged.Password = user.Password;
-            UserLogged.Age = user.Age;
-            UserLogged.CardNumber = user.CardNumber;
-            UserLogged.CreatedOn = user.CreatedOn;
-            UserLogged.IsSubscriptionExpired = user.IsSubscriptionExpired;
-            UserLogged.SubscriptionType = (Enums.SubscriptionTypeEnum)user.SubscriptionType;
-        }
-
         public List<T> ReadRecords()
         {
 			var folderPath = @"Database";

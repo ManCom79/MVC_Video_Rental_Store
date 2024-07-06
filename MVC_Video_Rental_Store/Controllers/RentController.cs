@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sevices.Implementations;
+using Sevices.Interfaces;
 
 namespace MVC_Video_Rental_Store.Controllers
 {
     public class RentController : Controller
     {
-        public RentService _rentService { get; set; }
-        public RentController(RentService rentService)
+        public IRentService _rentService;
+        public RentController(IRentService rentService)
         {
             _rentService = rentService;
         }

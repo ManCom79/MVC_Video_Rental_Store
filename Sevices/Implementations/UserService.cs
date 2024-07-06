@@ -8,22 +8,20 @@ namespace Sevices.Implementations
 {
 	public class UserService : IUserService
 	{
-		public DataTableRepository<User> _dataTableRepository;
-
-		public UserService()
+		public IUserDataTableRepository _userDataTableRepository;
+		public UserService(IUserDataTableRepository userDataTableRepository)
 		{
-			_dataTableRepository = new DataTableRepository<User>();
+			_userDataTableRepository = userDataTableRepository;
 		}
-
 		public List<UserViewModel> GetAll()
 		{
-			var users = _dataTableRepository.GetAll();
+			var users = _userDataTableRepository.GetAll();
 			return users.Select(x => x.ToViewModel()).ToList();
 		}
 
 		public void CreateUser(UserViewModel userModel)
 		{
-			if (_dataTableRepository.GetAll().Any(x => x.FullName == userModel.FullName))
+			if (_userDataTableRepository.GetAll().Any(x => x.FullName == userModel.FullName))
 			{
 				throw new Exception("A user with that name already exist!");
 			}
@@ -40,18 +38,18 @@ namespace Sevices.Implementations
 				SubscriptionType = userModel.SubscriptionType
 			};
 
-			_dataTableRepository.Add(user);
+			_userDataTableRepository.Add(user);
 		}
 
         public bool LogIn(UserViewModel model)
         {
-            if (!_dataTableRepository.GetAll().Any(x => x.Email == model.Email && x.Password == model.Password))
+            if (!_userDataTableRepository.GetAll().Any(x => x.Email == model.Email && x.Password == model.Password))
             {
                 return false;
             }
 
-			var user = _dataTableRepository.GetAll().FirstOrDefault(x => x.Email == model.Email);
-			_dataTableRepository.LogUser(user);
+			var user = _userDataTableRepository.GetAll().FirstOrDefault(x => x.Email == model.Email);
+            _userDataTableRepository.LogUser(user);
 			return true;
         }
     }

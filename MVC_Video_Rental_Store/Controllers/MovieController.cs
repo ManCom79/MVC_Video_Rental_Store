@@ -7,9 +7,9 @@ namespace MVC_Video_Rental_Store.Controllers
 {
     public class MovieController : Controller
     {
-        public MovieService _movieService;
-        public MovieController() { 
-            _movieService = new MovieService();
+        public IMovieService _movieService;
+        public MovieController(IMovieService movieService) { 
+            _movieService = movieService;
         }
         public IActionResult Index()
         {

@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sevices.Implementations;
+using Sevices.Interfaces;
 using ViewModels;
 
 namespace MVC_Video_Rental_Store.Controllers
 {
     public class UserController : Controller
     {
-        public UserService _userService;
+        public IUserService _userService;
 
-        public UserController(UserService userService)
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }
