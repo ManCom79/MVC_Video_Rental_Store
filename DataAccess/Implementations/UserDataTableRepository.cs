@@ -10,6 +10,11 @@ namespace DataAccess.Implementations
 {
     public class UserDataTableRepository : DataTableRepository<User>, IUserDataTableRepository
     {
+        public UserDataTableRepository(VideoRentalDbContext dbContext) : base(dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public void LogUser(User user)
         {
             UserLogged.Id = user.Id;

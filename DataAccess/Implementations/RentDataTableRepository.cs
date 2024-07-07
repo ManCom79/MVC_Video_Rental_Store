@@ -10,5 +10,9 @@ namespace DataAccess.Implementations
 {
     public class RentDataTableRepository : DataTableRepository<Rental>, IRentDataTableRepository
     {
+        public RentDataTableRepository(VideoRentalDbContext dbContext) : base(dbContext)
+        {
+            _dbContext = dbContext;
+        }
     }
 }

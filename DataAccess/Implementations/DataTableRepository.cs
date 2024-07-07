@@ -1,5 +1,6 @@
 ﻿using DataAccess.Interfaces;
 using DomainModels;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,54 +13,90 @@ namespace DataAccess.Implementations
 {
     public class DataTableRepository<T> : IDataTableRepository<T> where T : Base
     {
+        protected VideoRentalDbContext _dbContext;
+        public DataTableRepository(VideoRentalDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
         public void Add(T entity)
         {
-            var records = ReadRecords();
+            _dbContext.Add(entity);
+            _dbContext.SaveChanges();
+            //Uncomment to use local files as DB
+            //var records = ReadRecords();
 
-            var newId = 1;
+            //var newId = 1;
 
-            if (records.Count > 0)
-            {
-                newId = records.Max(x => x.Id) + 1;
-            }
+            //if (records.Count > 0)
+            //{
+            //    newId = records.Max(x => x.Id) + 1;
+            //}
 
-            entity.Id = newId;
-            records.Add(entity);
+            //entity.Id = newId;
+            //records.Add(entity);
 
-            WriteRecords(records);
-
-		}
+            //WriteRecords(records);
+        }
 
         public void Delete(T entity)
         {
-			var records = ReadRecords();
-            records.Remove(entity);
+            _dbContext.Remove(entity);
+            _dbContext.SaveChanges();
+            //Uncomment to use local files as DB
+            //var records = ReadRecords();
+            //         records.Remove(entity);
 
-			WriteRecords(records);
-		}
+            //WriteRecords(records);
+        }
 
         public void DeleteById(int id)
         {
-            var records = ReadRecords();
-            var record = records.FirstOrDefault(x => x.Id == id);
+            var record = GetById(id);
+            Delete(record);
+            //Uncomment to use local files as DB
+            //         var records = ReadRecords();
+            //         var record = records.FirstOrDefault(x => x.Id == id);
 
-            records.Remove(record);
+            //         records.Remove(record);
 
-			WriteRecords(records);
-		}
+            //WriteRecords(records);
+        }
 
         public List<T> GetAll()
         {
-            return ReadRecords();
+            return _dbContext.Set<T>().AsNoTracking().ToList();
+            //Uncomment to use local files as DB
+            //return ReadRecords();
         }
 
         public T GetById(int id)
         {
-			var records = ReadRecords();
-            var record = records.FirstOrDefault(x => x.Id == id);
-
+            var record = _dbContext.Set<T>().AsNoTracking().Where(x => x.Id == id).FirstOrDefault();
+            if (record == null)
+            {
+                throw new Exception($"There is no record with id: {id}");
+            }
             return record;
-		}
+            //Uncomment to use local files as DB
+            //var records = ReadRecords();
+            //         var record = records.FirstOrDefault(x => x.Id == id);
+
+            //         return record;
+        }
+        public void Update(T entity)
+        {
+            _dbContext.Update(entity);
+            _dbContext.SaveChanges();
+            //Uncomment to use local files as DB
+            //var records = ReadRecords();
+            //var record = records.FirstOrDefault(x => x.Id == entity.Id);
+
+            //var IndexOfRecord = records.IndexOf(record);
+
+            //records[IndexOfRecord] = entity;
+
+            //WriteRecords(records);
+        }
         public List<T> ReadRecords()
         {
 			var folderPath = @"Database";
@@ -92,17 +129,7 @@ namespace DataAccess.Implementations
 			return result;
 		}
 
-        public void Update(T entity)
-        {
-            var records = ReadRecords();
-            var record = records.FirstOrDefault(x => x.Id == entity.Id);
-            
-            var IndexOfRecord = records.IndexOf(record);
 
-            records[IndexOfRecord] = entity;
-
-            WriteRecords(records);
-        }
 
         public void WriteRecords(List<T> record)
         {

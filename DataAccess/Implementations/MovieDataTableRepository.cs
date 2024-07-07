@@ -10,5 +10,9 @@ namespace DataAccess.Implementations
 {
     public class MovieDataTableRepository : DataTableRepository<Movie>, IMovieDataTableRepository
     {
+        public MovieDataTableRepository(VideoRentalDbContext dbContext) : base(dbContext)
+        {
+            _dbContext = dbContext;
+        }
     }
 }

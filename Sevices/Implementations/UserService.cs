@@ -4,6 +4,7 @@ using DomainModels;
 using Sevices.Interfaces;
 using ViewModels;
 using Mappers;
+using Microsoft.EntityFrameworkCore;
 namespace Sevices.Implementations
 {
 	public class UserService : IUserService
